@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 19
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 018370195085.dkr.ecr.us-east-1.amazonaws.com/dbpostgres
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t 018370195085.dkr.ecr.us-east-1.amazonaws.com/dbpostgres:latest .
+  post_build:
+    commands:
+      - echo Pushing the Docker image to ECR...
+      - docker push 018370195085.dkr.ecr.us-east-1.amazonaws.com/dbpostgres:latest
+
